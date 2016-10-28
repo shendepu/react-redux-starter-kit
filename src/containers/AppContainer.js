@@ -1,6 +1,13 @@
 import React, { Component, PropTypes } from 'react'
-import { Router, RouterContext } from 'react-router'
+import { Match, BrowserRouter, ServerRouter } from 'react-router'
 import { Provider } from 'react-redux'
+
+const MatchWithSubRoutes = (route) => (
+  <Match {...route} render={(props) => (
+    // pass the sub-routes down to keep nesting
+    <route.component {...props} routes={route.routes} />
+  )} />
+)
 
 class AppContainer extends Component {
   static propTypes = {
@@ -17,10 +24,17 @@ class AppContainer extends Component {
 
     let router
     if (!window.__IS_SSR) {
-      let browserHistory = require('react-router').browserHistory
-      router = <Router history={browserHistory} children={routes} />
+      router = <BrowserRouter>
+        {routes.map((route, i) => (
+          <MatchWithSubRoutes key={i} {...route} />
+        ))}
+      </BrowserRouter>
     } else {
-      router = <RouterContext children={routes} />
+      router = <ServerRouter>
+        {routes.map((route, i) => (
+          <MatchWithSubRoutes key={i} {...route} />
+        ))}
+      </ServerRouter>
     }
 
     return (

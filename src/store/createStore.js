@@ -1,7 +1,7 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
-import { updateLocation } from './location'
+// import { updateLocation } from './location'
 
 export default (initialState = {}) => {
   // ======================================================
@@ -35,8 +35,8 @@ export default (initialState = {}) => {
 
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
   if (!window.__IS_SSR) {
-    const browserHistory = require('react-router').browserHistory
-    store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
+//     const browserHistory = require('react-router').browserHistory
+//     store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
   }
 
   if (module.hot) {

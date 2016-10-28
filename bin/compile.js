@@ -16,6 +16,7 @@ const compile = () => {
       }
       debug('Copying static assets to dist folder.')
       fs.copySync(paths.client('static'), paths.dist())
+//       fs.writeFile(paths.dist('manifest.json'), JSON.stringify(stats))
     })
     .then(() => {
       debug('Compilation completed successfully.')

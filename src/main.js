@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import ReactDomServer from 'react-dom/server'
 import createStore from './store/createStore'
 // import AppContainer from './containers/AppContainer'
-import { match, Router, RouterContext } from 'react-router'
+import { Match, BrowserRouter, ServerRouter, createServerRenderContext } from 'react-router'
 import { Provider } from 'react-redux'
 
 // ========================================================
@@ -15,17 +15,25 @@ const store = createStore(initialState)
 // ========================================================
 // Render Setup
 // ========================================================
+const MatchWithSubRoutes = (route) => (
+  <Match {...route} render={(props) => (
+    // pass the sub-routes down to keep nesting
+    <route.component {...props} routes={route.routes} />
+  )} />
+)
+
 let render
 
 if (!window.__IS_SSR) {
   const MOUNT_NODE = document.getElementById('root')
   render = () => {
     const routes = require('./routes/index').default(store)
-    const browserHistory = require('react-router').browserHistory
     ReactDOM.render(
       <Provider store={store}>
         <div style={{ height: '100%' }}>
-          <Router history={browserHistory} children={routes} />
+          <BrowserRouter>
+            <MatchWithSubRoutes key={0} {...routes[0]} />
+          </BrowserRouter>
         </div>
       </Provider>,
       MOUNT_NODE
@@ -73,25 +81,33 @@ if (!window.__IS_SSR) {
 } else {
   render = () => {
     const routes = require('./routes/index').default(store)
-    let html = ''
-    match({ routes, location: '/' }, (error, redirectionLocation, renderProps) => {
-      if (error) {
+    let requestUrl = window['requestUrl'] || '/'
 
-      } else if (redirectionLocation) {
+    const context = createServerRenderContext()
+    let html = ReactDomServer.renderToString(
+      <ServerRouter context={context} location={requestUrl}>
+        <MatchWithSubRoutes key={0} {...routes[0]} />
+      </ServerRouter>
+    )
 
-      } else if (renderProps) {
-        html = ReactDomServer.renderToString(
-          <Provider store={store}>
-            <div style={{ height: '100%' }}>
-              <RouterContext {...renderProps} />
-            </div>
-          </Provider>
-        )
-        console.log()
-      } else {
-        // 404
-      }
-    })
+//     match({ routes, location: '/' }, (error, redirectionLocation, renderProps) => {
+//       if (error) {
+//
+//       } else if (redirectionLocation) {
+//
+//       } else if (renderProps) {
+//         html = ReactDomServer.renderToString(
+//           <Provider store={store}>
+//             <div style={{ height: '100%' }}>
+//               <RouterContext {...renderProps} />
+//             </div>
+//           </Provider>
+//         )
+//         console.log()
+//       } else {
+//         // 404
+//       }
+//     })
 
     return html
   }
