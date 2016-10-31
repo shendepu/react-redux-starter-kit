@@ -20,17 +20,21 @@ export default (store) => ({
         /* Webpack named bundle   */
       }, 'counter')
     })
-  }
+  })
+// When using System.import, the best way is using a single file that imports
+// multiple imports, then using System.import to import this single file to
+// create only one bundle. See http://stackoverflow.com/a/40275174.
+// So use require.ensure instead
 //
+//   component: asyncComponent(() => {
 //     return Promise.all([
-//         System.import('./containers/CounterContainer'),
-//         System.import('./modules/counter')])
+//       System.import('./containers/CounterContainer'),
+//       System.import('./modules/counter')])
 //       .then(([Counter, reducer]) => {
 //         injectReducer(store, { key: 'counter', reducer: reducer.default })
 //         console.log('------- Counter ')
 //         console.log(Counter.default)
 //         return Counter
 //       })
-//     }
-  )
+//   })
 })
