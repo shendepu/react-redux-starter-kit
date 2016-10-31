@@ -2,7 +2,7 @@ import React from 'react'
 
 let firstRoute = true
 
-const asyncRoute = (getComponent) => class AsyncComponent extends React.Component {
+const asyncComponent = (getComponent) => class AsyncComponent extends React.Component {
   static Component = null
 
   mounted = false
@@ -38,7 +38,7 @@ const asyncRoute = (getComponent) => class AsyncComponent extends React.Componen
   render () {
     const { Component } = this.state
     if (Component !== null) {
-      console.log(Component)
+//       console.log(Component)
       if (Component !== null) {
         return <Component {...this.props} />
       }
@@ -50,4 +50,4 @@ const asyncRoute = (getComponent) => class AsyncComponent extends React.Componen
   }
 }
 
-export default asyncRoute
+export default asyncComponent

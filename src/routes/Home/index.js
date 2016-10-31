@@ -1,8 +1,9 @@
 // import HomeView from './components/HomeView'
-import asyncRoute from '../../components/asyncRoute'
+import asyncComponent from '../../components/asyncComponent'
 
 // Sync route definition
 export default {
-  pattern: '/home',
-  component : asyncRoute(() => System.import('./components/HomeView'))
+  pattern: '/',
+  exactly: true,
+  component : asyncComponent(() => System.import('./components/HomeView'))
 }

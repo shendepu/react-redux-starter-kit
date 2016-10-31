@@ -1,10 +1,10 @@
-import asyncRoute from '../../components/asyncRoute'
+import asyncComponent from '../../components/asyncComponent'
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  pattern : '/counter',
+  pattern : 'counter',
   /*  Async getComponent is only invoked when route matches   */
-  component: asyncRoute(() => {
+  component: asyncComponent(() => {
     return Promise.all([
         System.import('./containers/CounterContainer'),
         System.import('./modules/counter')])

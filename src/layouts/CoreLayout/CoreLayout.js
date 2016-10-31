@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import MatchWithSubRoutes from '../../components/MatchWithSubRoutes'
+import MatchWithRoutes from '../../components/MatchWithRoutes'
 import Header from '../../components/Header'
 import './CoreLayout.scss'
 import '../../styles/core.scss'
@@ -11,7 +11,7 @@ export const CoreLayout = ({ store, routes }) => (
       <Header />
       <div className='core-layout__viewport'>
         {routes.map((route, i) => (
-          <MatchWithSubRoutes key={i} {...route} />
+          <MatchWithRoutes key={i} {...route} />
         ))}
       </div>
     </div>
