@@ -59,8 +59,6 @@ const karmaConfig = {
 
 if (config.globals.__COVERAGE__) {
   karmaConfig.reporters.push('coverage')
-  debug('================= karmaConfig.webpack.module.loaders ==========')
-  debug(karmaConfig.webpack.module.loaders)
   karmaConfig.webpack.module.loaders.push({
     test    : /\.(js|jsx)$/,
     include : new RegExp(config.dir_client),
@@ -72,5 +70,4 @@ if (config.globals.__COVERAGE__) {
   })
 }
 
-console.log(karmaConfig.webpack)
 module.exports = (cfg) => cfg.set(karmaConfig)

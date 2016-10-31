@@ -11,7 +11,6 @@ const __PROD__ = config.globals.__PROD__
 const __TEST__ = config.globals.__TEST__
 
 debug('Creating configuration.')
-debug(config)
 const webpackConfig = {
   name    : 'client',
   target  : 'web',
@@ -36,8 +35,6 @@ webpackConfig.entry = {
     : [APP_ENTRY],
   vendor : config.compiler_vendors
 }
-
-console.log(webpackConfig.entry)
 
 // ------------------------------------
 // Bundle Output
