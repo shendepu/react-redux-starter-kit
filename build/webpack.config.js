@@ -43,7 +43,9 @@ webpackConfig.output = {
   chunkFilename   : `[id].[name].[${config.compiler_hash_type}].js`,
   filename   : `[name].[${config.compiler_hash_type}].js`,
   path       : paths.dist(),
-  publicPath : config.compiler_public_path
+  publicPath : config.compiler_public_path,
+  libraryTarget: 'var',
+  library    : `[name]`
 }
 
 // ------------------------------------
@@ -73,14 +75,14 @@ if (__DEV__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress : {
-        unused    : true,
-        dead_code : true,
-        warnings  : false
-      }
-    })
+    new webpack.optimize.DedupePlugin()
+//     new webpack.optimize.UglifyJsPlugin({
+//       compress : {
+//         unused    : true,
+//         dead_code : true,
+//         warnings  : false
+//       }
+//     })
   )
 }
 
