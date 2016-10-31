@@ -16,8 +16,11 @@ const webpackConfig = {
   target  : 'web',
   devtool : config.compiler_devtool,
   resolve : {
-    root       : paths.client(),
-    extensions : ['', '.js', '.jsx', '.json']
+    modules: [
+      paths.base(),
+      'node_modules'
+    ],
+    extensions : ['.js', '.jsx', '.json']
   },
   module : {}
 }
@@ -89,6 +92,35 @@ if (!__TEST__) {
   )
 }
 
+webpackConfig.plugins.push(
+  new webpack.LoaderOptionsPlugin({
+    options: {
+      context: paths.client(),
+      postcss: [ // <---- postcss configs go here under LoadOptionsPlugin({ options: { ??? } })
+        cssnano({
+          autoprefixer : {
+            add      : true,
+            remove   : true,
+            browsers : ['last 2 versions']
+          },
+          discardComments : {
+            removeAll : true
+          },
+          discardUnused : false,
+          mergeIdents   : false,
+          reduceIdents  : false,
+          safe          : true,
+          sourcemap     : true
+        })
+      ],
+      sassLoader: {
+        includePaths : paths.client('styles')
+      }
+      // ...other configs that used to directly on `modules.exports`
+    }
+  })
+)
+
 // ------------------------------------
 // Loaders
 // ------------------------------------
@@ -130,27 +162,27 @@ webpackConfig.module.loaders.push({
   ]
 })
 
-webpackConfig.sassLoader = {
-  includePaths : paths.client('styles')
-}
+// webpackConfig.sassLoader = {
+//   includePaths : paths.client('styles')
+// }
 
-webpackConfig.postcss = [
-  cssnano({
-    autoprefixer : {
-      add      : true,
-      remove   : true,
-      browsers : ['last 2 versions']
-    },
-    discardComments : {
-      removeAll : true
-    },
-    discardUnused : false,
-    mergeIdents   : false,
-    reduceIdents  : false,
-    safe          : true,
-    sourcemap     : true
-  })
-]
+// webpackConfig.postcss = [
+//   cssnano({
+//     autoprefixer : {
+//       add      : true,
+//       remove   : true,
+//       browsers : ['last 2 versions']
+//     },
+//     discardComments : {
+//       removeAll : true
+//     },
+//     discardUnused : false,
+//     mergeIdents   : false,
+//     reduceIdents  : false,
+//     safe          : true,
+//     sourcemap     : true
+//   })
+// ]
 
 // File loaders
 /* eslint-disable */
