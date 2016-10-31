@@ -17,13 +17,12 @@ const store = createStore(initialState)
 // ========================================================
 
 let render
+const routes = require('./routes/index').default(store).routes
 
 if (!window.__IS_SSR__) {
   const MOUNT_NODE = document.getElementById('root')
 
   render = () => {
-    const routes = require('./routes/index').default(store).routes
-
     ReactDOM.render(
       <AppContainer store={store} routes={routes} />,
       MOUNT_NODE
@@ -70,11 +69,12 @@ if (!window.__IS_SSR__) {
   }
 } else {
   const context = createServerRenderContext()
+  let requestUrl = window.__REQ_URL__ || '/'
   render = () => {
     return ReactDomServer.renderToString(
-      <ServerRouter location={window.__REQ_URL__} context={context}>
+      <ServerRouter location={requestUrl} context={context}>
         {({ action, location, router }) =>
-          <CoreLayout router={router} action={action} location={location} store={store} />}
+          <CoreLayout {...{ router, action, location, store, routes }} />}
       </ServerRouter>
     )
   }
@@ -85,4 +85,8 @@ if (!window.__IS_SSR__) {
 // ========================================================
 if (!window.__IS_SSR__) {
   render()
+}
+
+export {
+  render
 }
