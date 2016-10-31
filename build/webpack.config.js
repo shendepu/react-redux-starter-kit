@@ -11,6 +11,7 @@ const __PROD__ = config.globals.__PROD__
 const __TEST__ = config.globals.__TEST__
 
 debug('Creating configuration.')
+debug(config)
 const webpackConfig = {
   name    : 'client',
   target  : 'web',
@@ -35,6 +36,8 @@ webpackConfig.entry = {
     : [APP_ENTRY],
   vendor : config.compiler_vendors
 }
+
+console.log(webpackConfig.entry)
 
 // ------------------------------------
 // Bundle Output
@@ -210,14 +213,16 @@ if (!__DEV__) {
   ).forEach((loader) => {
     const first = loader.loaders[0]
     const rest = loader.loaders.slice(1)
-    loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
+//     loader.loader = ExtractTextPlugin.extract(first, rest.join('!'))
+    loader.loader = ExtractTextPlugin.extract({ fallbackLoader: first, loader: rest.join('!') })
     delete loader.loaders
   })
 
   webpackConfig.plugins.push(
-    new ExtractTextPlugin('[name].[contenthash].css', {
-      allChunks : true
-    })
+//     new ExtractTextPlugin('[name].[contenthash].css', {
+//       allChunks : true
+//     })
+    new ExtractTextPlugin({ filename: '[name].[contenthash].css', allChunks : true })
   )
 }
 

@@ -22,6 +22,7 @@ const karmaConfig = {
   },
   browsers : ['PhantomJS'],
   webpack  : {
+    entry: webpackConfig.entry,
     devtool : 'cheap-module-source-map',
     resolve : Object.assign({}, webpackConfig.resolve, {
       alias : Object.assign({}, webpackConfig.resolve.alias, {
@@ -46,8 +47,7 @@ const karmaConfig = {
       'react/addons'                   : true,
       'react/lib/ExecutionEnvironment' : true,
       'react/lib/ReactContext'         : 'window'
-    }),
-    sassLoader : webpackConfig.sassLoader
+    })
   },
   webpackMiddleware : {
     noInfo : true
@@ -59,14 +59,18 @@ const karmaConfig = {
 
 if (config.globals.__COVERAGE__) {
   karmaConfig.reporters.push('coverage')
-  karmaConfig.webpack.module.preLoaders = [{
+  debug('================= karmaConfig.webpack.module.loaders ==========')
+  debug(karmaConfig.webpack.module.loaders)
+  karmaConfig.webpack.module.loaders.push({
     test    : /\.(js|jsx)$/,
     include : new RegExp(config.dir_client),
     loader  : 'babel',
+    enforce : 'pre',
     query   : Object.assign({}, config.compiler_babel, {
       plugins : (config.compiler_babel.plugins || []).concat('istanbul')
     })
-  }]
+  })
 }
 
+console.log(karmaConfig.webpack)
 module.exports = (cfg) => cfg.set(karmaConfig)
