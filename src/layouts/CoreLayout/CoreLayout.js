@@ -29,6 +29,7 @@ CoreLayout.propTypes = {
     key: PropTypes.string
   }).isRequired,
   store: PropTypes.object.isRequired,
+  routes: PropTypes.array.isRequired
 }
 
 export default CoreLayout

@@ -13,13 +13,12 @@ export default (store) => ({
         const reducer = require('./modules/counter').default
 
         /*  Add the reducer to the store on key 'counter'  */
-        injectReducer(store, {key: 'counter', reducer})
+        injectReducer(store, { key: 'counter', reducer })
 
         /*  Return getComponent   */
         resolve(Counter)
         /* Webpack named bundle   */
       }, 'counter')
-
     })
   }
 //

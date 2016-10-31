@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactDomServer from 'react-dom/server'
+import { ServerRouter, createServerRenderContext } from 'react-router'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
+import CoreLayout from './layouts/CoreLayout'
 
 // ========================================================
 // Store Instantiation
@@ -23,7 +25,7 @@ if (!window.__IS_SSR__) {
     const routes = require('./routes/index').default(store).routes
 
     ReactDOM.render(
-      <AppContainer store={store} routes={routes}/>,
+      <AppContainer store={store} routes={routes} />,
       MOUNT_NODE
     )
   }
@@ -45,7 +47,7 @@ if (!window.__IS_SSR__) {
       const renderError = (error) => {
         const RedBox = require('redbox-react').default
 
-        ReactDOM.render(<RedBox error={error}/>, MOUNT_NODE)
+        ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
       }
 
       // Wrap render in try/catch
@@ -71,7 +73,8 @@ if (!window.__IS_SSR__) {
   render = () => {
     return ReactDomServer.renderToString(
       <ServerRouter location={window.__REQ_URL__} context={context}>
-        {({action, location, router}) => <Layout router={router} action={action} location={location} store={store} />}
+        {({ action, location, router }) =>
+          <CoreLayout router={router} action={action} location={location} store={store} />}
       </ServerRouter>
     )
   }
