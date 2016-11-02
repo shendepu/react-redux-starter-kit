@@ -18,6 +18,7 @@ if (!window.__IS_SSR__) {
   const MOUNT_NODE = document.getElementById('root')
 
   render = () => {
+    // routes should be here and in require form so that HMR works
     const routes = require('./routes/index').default(store).routes
 
     ReactDOM.render(
