@@ -1,17 +1,13 @@
-import CounterRoute from 'routes/Counter'
-
-describe('(Route) Counter', () => {
-  let _route
-
-  beforeEach(() => {
-    _route = CounterRoute({})
-  })
-
-  it('Should return a route configuration object', () => {
-    expect(typeof _route).to.equal('object')
-  })
-
-  it('Configuration should contain path `counter`', () => {
-    expect(_route.path).to.equal('counter')
-  })
-})
+// import CounterRoute from 'routes/Counter/Route'
+//
+// describe('(Route) Counter', () => {
+//   let _route
+//
+//   beforeEach(() => {
+//     _route = CounterRoute({})
+//   })
+//
+//   it('Configuration should contain pattern `counter`', () => {
+//     expect(_route.pattern).to.equal('counter')
+//   })
+// })
