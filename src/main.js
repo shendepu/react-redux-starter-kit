@@ -15,14 +15,13 @@ const store = createStore(initialState)
 let render
 
 if (!window.__IS_SSR__) {
-
   const MOUNT_NODE = document.getElementById('root')
 
   render = () => {
     const routes = require('./routes/index').default(store).routes
 
     ReactDOM.render(
-      <AppContainer store={store} routes={routes}/>,
+      <AppContainer store={store} routes={routes} />,
       MOUNT_NODE
     )
   }
@@ -44,7 +43,7 @@ if (!window.__IS_SSR__) {
       const renderError = (error) => {
         const RedBox = require('redbox-react').default
 
-        ReactDOM.render(<RedBox error={error}/>, MOUNT_NODE)
+        ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
       }
 
       // Wrap render in try/catch
