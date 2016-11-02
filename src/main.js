@@ -71,15 +71,33 @@ if (!window.__IS_SSR__) {
   }
 } else {
   const context = createServerRenderContext()
-  let requestUrl = window.__REQ_URL__ || '/'
+  const requestUrl = window.__REQ_URL__ || '/'
+  const location = { pathname: requestUrl }
 
   const routes = require('./routes/index').default(store).routes
-  const { matchedRoutes, params } = matchRoutesToLocation(routes, requestUrl)
+  const { matchedRoutes, params } = matchRoutesToLocation(routes, location)
+  window.println(requestUrl)
+  window.println(matchedRoutes)
+  window.println(params)
+  let loadDataRoutes = matchedRoutes.filter(route => route.component.loadData)
+  window.println(loadDataRoutes)
+
+  let allPromises = Promise.resolve('a')
+  let promises = loadDataRoutes.map(route => route.component.loadData(store, params))
+  for (let p in promises) {
+    allPromises = allPromises.then(() => p)
+  }
+//   let allPromises = [ Promise.resolve('a') ]
+//   let promises = loadDataRoutes.map(route => route.component.loadData(store, params))
+//   allPromises.push(...promises)
+//   window.println(allPromises)
 
   render = () => {
-    return Promise.all(
-      matchedRoutes.filter(route => route.component.loadData).map(route => route.loadData(params))
-    ).then(() => {
+//     return Promise.all(
+//       loadDataRoutes.map(route => Promise.resolve('aa'))
+//       [Promise.resolve('tt')]
+//     )
+    return allPromises.then(() => {
       return ReactDomServer.renderToString(
         <ServerRouter location={requestUrl} context={context}>
           {({ action, location, router }) =>
