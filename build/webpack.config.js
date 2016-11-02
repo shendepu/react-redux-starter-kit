@@ -43,7 +43,9 @@ webpackConfig.output = {
   chunkFilename   : `[id].[name].[${config.compiler_hash_type}].js`,
   filename   : `[name].[${config.compiler_hash_type}].js`,
   path       : paths.dist(),
-  publicPath : config.compiler_public_path
+  publicPath : config.compiler_public_path,
+  libraryTarget: 'var',
+  library    : `[name]`
 }
 
 // ------------------------------------

@@ -1,5 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ReactDomServer from 'react-dom/server'
+import { ServerRouter, createServerRenderContext } from 'react-router'
+import { matchRoutesToLocation } from 'lib/react-router-addons-routes'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 
@@ -65,8 +68,33 @@ if (!window.__IS_SSR__) {
       )
     }
   }
+} else {
+  const context = createServerRenderContext()
+  let requestUrl = window.__REQ_URL__ || '/'
+
+  const routes = require('./routes/index').default(store).routes
+  const { matchedRoutes, params } = matchRoutesToLocation(routes, requestUrl)
+
+  render = () => {
+    return Promise.all(
+      matchedRoutes.filter(route => route.component.loadData).map(route => route.loadData(params))
+    ).then(() => {
+      return ReactDomServer.renderToString(
+        <ServerRouter location={requestUrl} context={context}>
+          {({ action, location, router }) =>
+            <CoreLayout {...{ router, action, location, store, routes }} />}
+        </ServerRouter>
+      )
+    })
+  }
 }
 
+const getState = () => store.getState()
+
+export {
+  render,
+  getState
+}
 // ========================================================
 // Go!
 // ========================================================
