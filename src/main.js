@@ -5,6 +5,7 @@ import { ServerRouter, createServerRenderContext } from 'react-router'
 import { matchRoutesToLocation } from 'lib/react-router-addons-routes'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
+import CoreLayout from './layouts/CoreLayout'
 
 // ========================================================
 // Store Instantiation
