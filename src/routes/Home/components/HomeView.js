@@ -4,7 +4,7 @@ import './HomeView.scss'
 
 export const HomeView = () => (
   <div>
-    <h4>Welcome22!</h4>
+    <h4>Welcome2!</h4>
     <img
       alt='This is a duck, because Redux!'
       className='duck'

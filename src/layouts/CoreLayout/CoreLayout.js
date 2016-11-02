@@ -1,27 +1,12 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import { Match } from 'react-router'
+import { MatchWithRoutes } from 'lib/react-router-addons-routes'
 import Header from '../../components/Header'
 import './CoreLayout.scss'
 import '../../styles/core.scss'
 
 
-const mergePatterns = (a, b) => {
-  return a[a.length - 1] === '/' && b[0] === '/'
-    ? `${a.slice(0, a.length - 1)}${b}`
-    : `${a}${b}`
-}
-
-const MatchWithRoutes = ({ parentPattern = '/', pattern, routes, component:Component, ...rest }) => {
-  const nestedPattern = mergePatterns(parentPattern, pattern)
-  return (
-    <Match {...rest} pattern={nestedPattern} render={(matchProps) => (
-      <Component {...matchProps} parentPattern={pattern} routes={routes} />
-    )} />
-  )
-}
-
-export const CoreLayout = ({ children, routes, store }) => (
+export const CoreLayout = ({ routes, store }) => (
   <Provider store={store}>
     <div className='container text-center'>
       <Header />
@@ -35,7 +20,17 @@ export const CoreLayout = ({ children, routes, store }) => (
 )
 
 CoreLayout.propTypes = {
-  children : React.PropTypes.element
+  router: PropTypes.object.isRequired,
+  action: PropTypes.oneOf(['PUSH', 'REPLACE', 'POP']).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
+    search: PropTypes.string.isRequired,
+    hash: PropTypes.string.isRequired,
+    state: PropTypes.any,
+    key: PropTypes.string
+  }).isRequired,
+  store: PropTypes.object.isRequired,
+  routes: PropTypes.array.isRequired
 }
 
 export default CoreLayout
