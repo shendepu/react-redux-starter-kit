@@ -2,6 +2,7 @@ const webpack = require('webpack')
 const cssnano = require('cssnano')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin')
 const config = require('../config')
 const debug = require('debug')('app:webpack:config')
 
@@ -68,6 +69,10 @@ webpackConfig.plugins = [
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
+    new NormalModuleReplacementPlugin(/\/Route$/, function(result) {
+        result.request = result.request.replace(/(\/Route$)/, '$1Async');
+      }
+    ),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   )

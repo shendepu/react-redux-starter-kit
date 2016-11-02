@@ -1,0 +1,1 @@
+export matchRoutesToLocation from './matchRoutesToLocation'

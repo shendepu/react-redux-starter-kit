@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import ReactDomServer from 'react-dom/server'
 import { ServerRouter, createServerRenderContext } from 'react-router'
+import { matchRoutesToLocation } from 'lib/react-router-addons-routes'
 import createStore from './store/createStore'
 import AppContainer from './containers/AppContainer'
 import CoreLayout from './layouts/CoreLayout'
@@ -70,15 +71,26 @@ if (!window.__IS_SSR__) {
 } else {
   const context = createServerRenderContext()
   let requestUrl = window.__REQ_URL__ || '/'
+
+  const { matchedRoutes, params } = matchRoutesToLocation(routes, requestUrl)
+
+  println(matchedRoutes)
+  println(params)
   render = () => {
-    return ReactDomServer.renderToString(
-      <ServerRouter location={requestUrl} context={context}>
-        {({ action, location, router }) =>
-          <CoreLayout {...{ router, action, location, store, routes }} />}
-      </ServerRouter>
-    )
+    return Promise.all(
+      matchedRoutes.filter(route => route.component.loadData).map(route => route.loadData(params))
+    ).then(() => {
+      return ReactDomServer.renderToString(
+        <ServerRouter location={requestUrl} context={context}>
+          {({ action, location, router }) =>
+            <CoreLayout {...{ router, action, location, store, routes }} />}
+        </ServerRouter>
+      )
+    })
   }
 }
+
+const getState = () => store.getState()
 
 // ========================================================
 // Go!
@@ -88,5 +100,6 @@ if (!window.__IS_SSR__) {
 }
 
 export {
-  render
+  render,
+  getState
 }
