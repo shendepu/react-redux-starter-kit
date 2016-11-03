@@ -2,11 +2,12 @@ import React from 'react'
 
 class Counter extends React.Component {
   static loadData (store, params) {
-    return new Promise(() => {
+    return new Promise((resolve) => {
       store.dispatch({
         type    : 'COUNTER_INCREMENT',
         payload : 5
       })
+      resolve('dispatched')
     })
   }
 
