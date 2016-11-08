@@ -18,15 +18,19 @@ const store = createStore(initialState)
 // ========================================================
 let render
 
+if (window.__APP_BASE_PATH__ === undefined) {
+  window.__APP_BASE_PATH__ = ''
+}
+
 if (!window.__IS_SSR__) {
   const MOUNT_NODE = document.getElementById('root')
 
   render = () => {
     // routes should be here and in require form so that HMR works
-    const routes = require('./routes/index').default(store).routes
+    const rootRoute = require('./routes/index').default(store)
 
     ReactDOM.render(
-      <AppContainer store={store} routes={routes} />,
+      <AppContainer store={store} routes={rootRoute.routes} basePath={rootRoute.pattern} />,
       MOUNT_NODE
     )
   }
@@ -74,8 +78,8 @@ if (!window.__IS_SSR__) {
   const requestUrl = window.__REQ_URL__ || '/'
   const location = { pathname: requestUrl }
 
-  const routes = require('./routes/index').default(store).routes
-  const { matchedRoutes, params } = matchRoutesToLocation(routes, location)
+  const rootRoute = require('./routes/index').default(store)
+  const { matchedRoutes, params } = matchRoutesToLocation(rootRoute.routes, location, [], {}, rootRoute.pattern)
 
   render = () => {
     return Promise.all(
@@ -84,7 +88,12 @@ if (!window.__IS_SSR__) {
       return ReactDomServer.renderToString(
         <ServerRouter location={requestUrl} context={context}>
           {({ action, location, router }) =>
-            <CoreLayout {...{ router, action, location, store, routes }} />}
+            <CoreLayout {...{ router,
+              action,
+              location,
+              store,
+              routes: rootRoute.routes,
+              basePath: rootRoute.pattern }} />}
         </ServerRouter>
       )
     })

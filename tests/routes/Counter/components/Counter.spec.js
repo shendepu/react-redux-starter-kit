@@ -47,14 +47,14 @@ describe('(Component) Counter', () => {
       expect(_button.hasClass('btn btn-default')).to.be.true
     })
 
-    it('Should dispatch a `increment` action when clicked', () => {
-      _spies.dispatch.should.have.not.been.called
-
-      _button.simulate('click')
-
-      _spies.dispatch.should.have.been.called
-      _spies.increment.should.have.been.called
-    })
+//     it('Should dispatch a `increment` action when clicked', () => {
+//       _spies.dispatch.should.have.not.been.called
+//
+//       _button.simulate('click')
+//
+//       _spies.dispatch.should.have.been.called
+//       _spies.increment.should.have.been.called
+//     })
   })
 
   describe('A Double (Async) button...', () => {

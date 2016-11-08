@@ -5,6 +5,7 @@ import Layout from '../layouts/CoreLayout'
 
 class AppContainer extends Component {
   static propTypes = {
+    basePath: PropTypes.string.isRequired,
     routes : PropTypes.array.isRequired,
     store  : PropTypes.object.isRequired
   }
@@ -14,12 +15,12 @@ class AppContainer extends Component {
   }
 
   render () {
-    const { routes, store } = this.props
+    const { basePath, routes, store } = this.props
 
     return (
       <BrowserRouter>
         {
-          ({ action, location, router }) => <Layout {...{ router, action, location, store, routes }} />
+          ({ action, location, router }) => <Layout {...{ router, action, location, store, routes, basePath }} />
         }
       </BrowserRouter>
     )

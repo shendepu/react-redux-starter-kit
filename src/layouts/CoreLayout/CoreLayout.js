@@ -5,13 +5,13 @@ import Header from '../../components/Header'
 import './CoreLayout.scss'
 import '../../styles/core.scss'
 
-export const CoreLayout = ({ routes, store }) => (
+export const CoreLayout = ({ basePath, routes, store }) => (
   <Provider store={store}>
     <div className='container text-center'>
       <Header />
       <div className='core-layout__viewport'>
         {routes.map((route, i) => (
-          <MatchWithRoutes key={i} {...route} />
+          <MatchWithRoutes key={i} {...route} parentPattern={basePath} />
         ))}
       </div>
     </div>
@@ -29,6 +29,7 @@ CoreLayout.propTypes = {
     key: PropTypes.string
   }).isRequired,
   store: PropTypes.object.isRequired,
+  basePath: PropTypes.string,
   routes: PropTypes.array.isRequired
 }
 
