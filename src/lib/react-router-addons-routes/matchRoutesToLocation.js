@@ -5,7 +5,6 @@ const matchRoutesToLocation = (routes, location, matchedRoutes = [], params = {}
   routes.forEach((route) => {
     const nestedPattern = mergePatterns(parentPattern, route.pattern)
     const match = matchPattern(nestedPattern, location, route.exactly)
-    window.println(match)
 
     if (match) {
       matchedRoutes.push(route)

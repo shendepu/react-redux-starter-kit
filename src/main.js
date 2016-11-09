@@ -17,7 +17,6 @@ class App {
     // Store Instantiation
     // ========================================================
     const initialState = window.___INITIAL_STATE__
-    console.log('creating store')
     this.store = createStore(initialState)
   }
 
