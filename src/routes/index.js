@@ -5,18 +5,24 @@ import CounterRoute from './Counter/Route'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
-let IndexHtmlRoute = {
+const IndexHtmlRoute = {
   pattern: '/index.html',
+  exactly: true,
+  component : HomeRoute.component
+}
+const Index2HtmlRoute = {
+  pattern: '',
   exactly: true,
   component : HomeRoute.component
 }
 
 export const createRoutes = (store) => ({
-  pattern        : window.__APP_BASE_PATH__ + '/',
+  pattern        : window.__APP_BASE_PATH__,
   component   : CoreLayout,
   routes : [
     HomeRoute,
     IndexHtmlRoute,
+    Index2HtmlRoute,
     CounterRoute(store)
   ]
 })
