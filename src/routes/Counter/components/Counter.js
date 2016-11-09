@@ -3,13 +3,20 @@ import 'whatwg-fetch'
 
 class Counter extends React.Component {
   static loadData (store, params) {
-    return fetch('http://httpbin.org/ip')
-      .then(response => {
-        store.dispatch({
-          type    : 'COUNTER_INCREMENT',
-          payload : 5
-        })
+//     return fetch('http://httpbin.org/ip')
+//       .then(response => {
+//         store.dispatch({
+//           type    : 'COUNTER_INCREMENT',
+//           payload : 5
+//         })
+//       })
+    return new Promise(resolve => {
+      store.dispatch({
+        type    : 'COUNTER_INCREMENT',
+        payload : 5
       })
+      resolve('aa')
+    })
   }
 
   render () {

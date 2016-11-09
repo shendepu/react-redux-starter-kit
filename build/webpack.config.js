@@ -28,7 +28,6 @@ const webpackConfig = {
 // Entry Points
 // ------------------------------------
 const APP_ENTRY_PATHS = [
-  'babel-polyfill',
   'whatwg-fetch',
   paths.client('main.js')
 ]
@@ -79,14 +78,14 @@ if (__DEV__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress : {
-        unused    : true,
-        dead_code : true,
-        warnings  : false
-      }
-    })
+    new webpack.optimize.DedupePlugin()
+//     new webpack.optimize.UglifyJsPlugin({
+//       compress : {
+//         unused    : true,
+//         dead_code : true,
+//         warnings  : false
+//       }
+//     })
   )
 }
 
