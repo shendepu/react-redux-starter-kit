@@ -2,7 +2,7 @@ import asyncComponent from 'components/asyncComponent'
 import { injectReducer } from '../../store/reducers'
 
 export default (store) => ({
-  pattern : 'counter',
+  pattern : '/counter',
   /*  Async getComponent is only invoked when route matches   */
   component: asyncComponent(() => {
     return new Promise(resolve => {

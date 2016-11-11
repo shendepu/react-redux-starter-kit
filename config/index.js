@@ -10,6 +10,7 @@ debug('Creating default configuration.')
 // ========================================================
 const config = {
   env : process.env.NODE_ENV || 'development',
+  ssr : process.env.SSR || 'false',
 
   // ----------------------------------
   // Project Structure
@@ -17,6 +18,7 @@ const config = {
   path_base  : path.resolve(__dirname, '..'),
   dir_client : 'src',
   dir_dist   : 'dist',
+  dir_dist_ssr   : 'dist_ssr',
   dir_server : 'server',
   dir_test   : 'tests',
 
@@ -82,7 +84,8 @@ config.globals = {
   '__PROD__'     : config.env === 'production',
   '__TEST__'     : config.env === 'test',
   '__COVERAGE__' : !argv.watch && config.env === 'test',
-  '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
+  '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
+  '__SSR__'      : config.ssr === 'true'
 }
 
 // ------------------------------------
@@ -112,7 +115,8 @@ function base () {
 config.utils_paths = {
   base   : base,
   client : base.bind(null, config.dir_client),
-  dist   : base.bind(null, config.dir_dist)
+  dist   : base.bind(null, config.dir_dist),
+  distSSR: base.bind(null, config.dir_dist_ssr)
 }
 
 // ========================================================

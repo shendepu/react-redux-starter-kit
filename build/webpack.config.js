@@ -9,6 +9,7 @@ const paths = config.utils_paths
 const __DEV__ = config.globals.__DEV__
 const __PROD__ = config.globals.__PROD__
 const __TEST__ = config.globals.__TEST__
+const __SSR__ = config.globals.__SSR__
 
 debug('Creating configuration.')
 const webpackConfig = {
@@ -45,7 +46,7 @@ webpackConfig.entry = {
 webpackConfig.output = {
   chunkFilename   : `[id].[name].[${config.compiler_hash_type}].js`,
   filename   : `[name].[${config.compiler_hash_type}].js`,
-  path       : paths.dist(),
+  path       : __SSR__ ? paths.distSSR() : paths.dist(),
   publicPath : config.compiler_public_path,
   libraryTarget: 'var',
   library    : `[name]`
@@ -67,6 +68,16 @@ webpackConfig.plugins = [
     }
   })
 ]
+
+if (__SSR__) {
+  webpackConfig.plugins.push(
+    new webpack.NormalModuleReplacementPlugin(
+      /(.*)(\/RouteAsync$)/, function (result) {
+        result.request = result.request.replace(/(.*)(\/RouteAsync$)/, '$1/Route')
+        return result
+      })
+  )
+}
 
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
